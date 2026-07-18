@@ -1,21 +1,16 @@
 name: E2E Tests
 
-"on":
-  push:
-    branches:
-      - main
-  pull_request:
+"on": [push, pull_request]
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
 
     steps:
-      - name: Check out repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -27,7 +22,7 @@ jobs:
       - name: Install browsers
         run: npx playwright install --with-deps chromium webkit
 
-      - name: Run E2E tests
+      - name: Run tests
         run: npm run test:e2e
 
       - name: Upload report
@@ -36,4 +31,3 @@ jobs:
         with:
           name: playwright-report
           path: playwright-report/
-          retention-days: 14
